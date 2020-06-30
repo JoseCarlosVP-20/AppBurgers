@@ -5,6 +5,7 @@ namespace AppBurgers.Api.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using AppBurgers.Core.Interfaces;
     using AppBurgers.Infrastructure.Repositories;
     using Microsoft.AspNetCore.Mvc;
 
@@ -12,10 +13,15 @@ namespace AppBurgers.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IUserRepository _userRepository;
+        public UserController(IUserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
         [HttpGet]
         public IActionResult GetUsers()
         {
-            var users = new UserRepository().GetUsers().ToList();
+            var users = _userRepository.GetUsers();
             return Ok(users);
         }
     }
