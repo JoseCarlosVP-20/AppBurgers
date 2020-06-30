@@ -1,18 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace AppBurgers.Api
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using AppBurgers.Core.Interfaces;
+    using AppBurgers.Infrastructure.Data;
+    using AppBurgers.Infrastructure.Repositories;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.HttpsPolicy;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,6 +31,10 @@ namespace AppBurgers.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //Dependencias
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddDbContext<AppBurgerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AppBurgerDB")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
