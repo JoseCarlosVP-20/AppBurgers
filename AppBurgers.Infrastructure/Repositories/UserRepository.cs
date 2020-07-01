@@ -19,18 +19,5 @@ namespace AppBurgers.Infrastructure.Repositories
             var users = _context.Usuario.ToList();
             return users;
         }
-
-        // public IEnumerable<Usuario> GetUsers(){
-        //     var users= Enumerable.Range(1,10).Select(x => new Usuario{
-        //         UserId = x,
-        //         FirstName =$"Juan {x}",
-        //         LastName="Perez",
-        //         Mail = $"Jperez{x}@gmail.com",
-        //         Telephone =$"841{x}97{x}{x}"
-        //     });
-        //     return users;
-        // }
-
-
     }
 }

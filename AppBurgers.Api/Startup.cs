@@ -5,9 +5,11 @@ namespace AppBurgers.Api
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+
     using AppBurgers.Core.Interfaces;
     using AppBurgers.Infrastructure.Data;
     using AppBurgers.Infrastructure.Repositories;
+
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,7 +19,7 @@ namespace AppBurgers.Api
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
-    
+
 
     public class Startup
     {
@@ -35,7 +37,8 @@ namespace AppBurgers.Api
 
             //Dependencias
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddDbContext<AppBurgerContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AppBurgerDB")));
+            services.AddDbContext<AppBurgerContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("AppBurgerDB")));
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
