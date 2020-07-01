@@ -1,22 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using AppBurgers.Core.Interfaces;
-using AppBurgers.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace AppBurgers.Infrastructure.Repositories
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Linq.Expressions;
+    using AppBurgers.Core.Interfaces;
+    using AppBurgers.Infrastructure.Data;
+    using Microsoft.EntityFrameworkCore;
+    using AppBurgers.Core.Entities;
+
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private readonly AppBurgerContext _context;
+        private readonly  AppBurgerContext _context;
         private readonly DbSet<TEntity> _dbset;
 
         public BaseRepository(AppBurgerContext context)
         {
             _context = context;
-            _dbset = _context.Set<TEntity>();
+            _dbset = context.Set<TEntity>();
         }
         public void Delete(TEntity entityToDelete)
         {
@@ -36,12 +38,13 @@ namespace AppBurgers.Infrastructure.Repositories
         public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = _dbset;
-            if(query != null){
+            if (filter != null)
+            {
                 query = query.Where(filter);
             }
             if (includeProperties != null)
             {
-                foreach (var includeProperty in includeProperties.Split(new char[]{','}, StringSplitOptions.RemoveEmptyEntries))
+                foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProperty);
                 }
@@ -54,6 +57,8 @@ namespace AppBurgers.Infrastructure.Repositories
             {
                 return query.ToList();
             }
+
+            
 
         }
 
